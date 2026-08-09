@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact &amp; Support — Anchorbase</title>
+<meta name="description" content="Get in touch with Anchorbase, subscribe to the weekly publisher list, or find answers to common questions about orders, refunds and dropped links.">
+<meta name="keywords" content="contact Anchorbase, backlink support, SEO FAQ, publisher list, refund policy">
+<meta name="author" content="Anchorbase">
+<link rel="canonical" href="https://anchorbase.example/contact.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contact &amp; Support — Anchorbase">
+<meta property="og:description" content="Roughly 40 sites join the marketplace each week. Get the list with metrics before the good ones sell out.">
+<meta property="og:image" content="og-cover.svg">
+<meta property="og:url" content="https://anchorbase.example/contact.html">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+<!-- Fonts: Poppins (display), Inter (body), JetBrains Mono (metrics readouts) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     LOADING SCREEN
+     ============================================================ -->
+<div class="loader" id="loader" role="status" aria-live="polite" aria-label="Loading Anchorbase">
+  <div class="loader__mark">
+    <span class="loader__link"><i class="fa-solid fa-link"></i></span>
+  </div>
+  <p class="loader__text">Indexing publishers<span class="loader__dots"></span></p>
+  <div class="loader__bar"><span></span></div>
+</div>
+
+<!-- Scroll progress bar -->
+<div class="progress" id="progress" aria-hidden="true"><span id="progressFill"></span></div>
+
+<!-- Ambient floating background shapes -->
+<div class="ambient" aria-hidden="true">
+  <span class="orb orb--1" data-parallax="0.06"></span>
+  <span class="orb orb--2" data-parallax="-0.04"></span>
+  <span class="orb orb--3" data-parallax="0.03"></span>
+  <span class="grid-fade"></span>
+</div>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============================================================
+     STICKY NAVIGATION
+     ============================================================ -->
+<header class="nav" id="nav">
+  <div class="container nav__inner">
+
+    <a class="brand" href="index.html" aria-label="Anchorbase home">
+      <span class="brand__mark">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M11 21 21 11" />
+          <path d="M13.5 8.5 16 6a6 6 0 0 1 8.5 8.5L22 17" />
+          <path d="M18.5 23.5 16 26a6 6 0 0 1-8.5-8.5L10 15" />
+        </svg>
+      </span>
+      <span class="brand__name">Anchor<span>base</span></span>
+    </a>
+
+    <nav class="nav__links" id="navLinks" aria-label="Primary">
+      <a href="index.html" class="nav__link">Home</a>
+      <a href="marketplace.html" class="nav__link">Marketplace</a>
+      <a href="categories.html" class="nav__link">Categories</a>
+      <a href="products.html" class="nav__link">Products</a>
+      <a href="pricing.html" class="nav__link">Pricing</a>
+      <a href="blog.html" class="nav__link">Blog</a>
+      <a href="contact.html" class="nav__link is-active">Contact</a>
+      <div class="nav__mobile-actions">
+        <a href="#login" class="btn btn--ghost btn--block">Log in</a>
+        <a href="#register" class="btn btn--primary btn--block">Create account</a>
+      </div>
+    </nav>
+
+    <div class="nav__actions">
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch theme">
+        <i class="fa-solid fa-moon" aria-hidden="true"></i>
+      </button>
+      <a href="#login" class="btn btn--ghost nav__login">Log in</a>
+      <a href="#register" class="btn btn--primary">Create account</a>
+      <button class="icon-btn nav__burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="section" id="faq">
+  <div class="container container--narrow">
+    <header class="section__head reveal">
+      <p class="eyebrow"><span class="dot"></span> FAQ</p>
+      <h2 class="section__title">Questions people ask before their first order</h2>
+    </header>
+
+    <div class="faq">
+      <div class="faq__item reveal">
+        <button class="faq__q" type="button" aria-expanded="false">
+          <span>Are these links safe after a Google core update?</span>
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+        <div class="faq__a"><p>No vendor can promise immunity, and anyone who does is selling you something. What we control is risk: publishers with genuine organic traffic, editorial review on every article, mixed anchor text, and drip-fed delivery. We also monitor your placements for 12 months and replace anything that gets removed or nofollowed.</p></div>
+      </div>
+
+      <div class="faq__item reveal">
+        <button class="faq__q" type="button" aria-expanded="false">
+          <span>How long until I see a ranking change?</span>
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+        <div class="faq__a"><p>Indexing usually happens inside 14 days. Movement on competitive keywords typically starts between weeks 6 and 12, and compounds from there. If a page is stuck on page three, a handful of strong links moves it faster than a page-eight page will ever move.</p></div>
+      </div>
+
+      <div class="faq__item reveal">
+        <button class="faq__q" type="button" aria-expanded="false">
+          <span>Can I see the website before I pay?</span>
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+        <div class="faq__a"><p>Yes. Marketplace listings show full metrics, traffic charts and sample published articles. For retainer plans we send three named domains per placement and you choose. Some publishers ask us to keep their domain private until an order is placed — those are labelled clearly.</p></div>
+      </div>
+
+      <div class="faq__item reveal">
+        <button class="faq__q" type="button" aria-expanded="false">
+          <span>Do you write the content, or do I?</span>
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+        <div class="faq__a"><p>Either. Every package includes an article written by a native-language writer with experience in your niche, and you review it before submission. If you'd rather supply your own copy, deduct $40 from the package price at checkout.</p></div>
+      </div>
+
+      <div class="faq__item reveal">
+        <button class="faq__q" type="button" aria-expanded="false">
+          <span>What happens if the link is removed?</span>
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+        <div class="faq__a"><p>Our monitor checks each live URL weekly. If a link disappears, turns nofollow or the page 404s within 12 months, we place a replacement of equal or better metrics at no cost. If we can't, that placement is refunded in full.</p></div>
+      </div>
+
+      <div class="faq__item reveal">
+        <button class="faq__q" type="button" aria-expanded="false">
+          <span>Which niches do you refuse?</span>
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+        <div class="faq__a"><p>We don't place links for adult content, unlicensed pharmaceuticals, weapons or anything requiring a licence we can't verify. Gambling and CBD are handled case by case with publishers who accept them and disclose properly.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     NEWSLETTER / CONTACT
+     ============================================================ -->
+<section class="section section--tint" id="contact">
+  <div class="container">
+    <div class="news reveal">
+      <div class="news__inner">
+        <h2 class="news__title">New publishers, sent every Tuesday</h2>
+        <p class="news__sub">Roughly 40 sites join the marketplace each week. Get the list with metrics before the good ones sell out.</p>
+
+        <form class="news__form" id="newsForm" novalidate>
+          <label class="sr-only" for="newsEmail">Email address</label>
+          <div class="field">
+            <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+            <input type="email" id="newsEmail" name="email" placeholder="you@company.com" autocomplete="email" required>
+          </div>
+          <button class="btn btn--dark ripple" type="submit">Subscribe</button>
+        </form>
+
+        <p class="news__note" id="newsNote" role="status">No more than one email a week. Unsubscribe in one click.</p>
+      </div>
+      <span class="news__glow" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+
+      <div class="footer__brand">
+        <a class="brand" href="index.html">
+          <span class="brand__mark">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+              <path d="M11 21 21 11" />
+              <path d="M13.5 8.5 16 6a6 6 0 0 1 8.5 8.5L22 17" />
+              <path d="M18.5 23.5 16 26a6 6 0 0 1-8.5-8.5L10 15" />
+            </svg>
+          </span>
+          <span class="brand__name">Anchor<span>base</span></span>
+        </a>
+        <p>A curated marketplace for backlinks that come from sites people actually read. Vetted publishers, verified metrics, replacement guarantee.</p>
+        <div class="socials">
+          <a href="contact.html" aria-label="Anchorbase on X"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="contact.html" aria-label="Anchorbase on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="contact.html" aria-label="Anchorbase on YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="contact.html" aria-label="Anchorbase on Discord"><i class="fa-brands fa-discord"></i></a>
+        </div>
+      </div>
+
+      <nav class="footer__col" aria-label="Company">
+        <h3>Company</h3>
+        <a href="index.html#why">About us</a>
+        <a href="index.html#process">How it works</a>
+        <a href="index.html#reviews">Customer reviews</a>
+        <a href="contact.html">Careers</a>
+        <a href="contact.html">Become a publisher</a>
+      </nav>
+
+      <nav class="footer__col" aria-label="Marketplace">
+        <h3>Marketplace</h3>
+        <a href="categories.html">Guest posts</a>
+        <a href="categories.html">Niche edits</a>
+        <a href="categories.html">EDU &amp; GOV links</a>
+        <a href="categories.html">Local citations</a>
+        <a href="pricing.html">Monthly retainers</a>
+        <a href="products.html">All products</a>
+      </nav>
+
+      <nav class="footer__col" aria-label="Support">
+        <h3>Support</h3>
+        <a href="contact.html#faq">Help centre</a>
+        <a href="contact.html">Contact support</a>
+        <a href="contact.html#faq">Order status</a>
+        <a href="contact.html#faq">Refund policy</a>
+        <a href="contact.html#faq">Report a dropped link</a>
+      </nav>
+
+      <nav class="footer__col" aria-label="Resources">
+        <h3>Resources</h3>
+        <a href="blog.html">Blog</a>
+        <a href="blog.html">Link building guide</a>
+        <a href="blog.html">Anchor text calculator</a>
+        <a href="blog.html">DA vs DR explained</a>
+        <a href="contact.html">API docs</a>
+      </nav>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p>© 2026 Anchorbase Ltd. All rights reserved.</p>
+      <nav class="footer__legal" aria-label="Legal">
+        <a href="contact.html">Privacy</a>
+        <a href="contact.html">Terms</a>
+        <a href="contact.html">Cookies</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll to top -->
+<button class="to-top" id="toTop" type="button" aria-label="Back to top">
+  <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+</button>
+
+<script src="script.js"></script>
+</body>
+</html>

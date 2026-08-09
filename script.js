@@ -97,8 +97,12 @@
   const burger = $('#burger');
   const navLinks = $('#navLinks');
   const links = $$('.nav__link');
+  // Nav links now point to their own pages (e.g. marketplace.html); only
+  // same-page hash links (e.g. #why) participate in scroll-based highlighting.
   const sections = links
-    .map(link => $(link.getAttribute('href')))
+    .map(link => link.getAttribute('href'))
+    .filter(href => href && href.startsWith('#'))
+    .map(href => $(href))
     .filter(Boolean);
 
   function closeMenu() {
@@ -400,6 +404,53 @@
       newsNote.classList.remove('is-error');
     });
   }
+
+
+  /* ==========================================================
+     15. STORE SEARCH + CATEGORY FILTER (products page)
+     ========================================================== */
+  const productSearch = $('#productSearch');
+  const productCategory = $('#productCategory');
+  const listingCards = $$('.listing');
+  const storeCount = $('#storeCount');
+  const noResults = $('#noResults');
+
+  function filterListings() {
+    if (!listingCards.length) return;
+    const q = (productSearch?.value || '').trim().toLowerCase();
+    const cat = productCategory?.value || '';
+    let visible = 0;
+
+    listingCards.forEach(card => {
+      const title = card.dataset.title || '';
+      const category = card.dataset.category || '';
+      const match = (!q || title.includes(q)) && (!cat || category === cat);
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+
+    if (storeCount) storeCount.textContent = `Showing ${visible} of ${listingCards.length} products`;
+    if (noResults) noResults.classList.toggle('is-visible', visible === 0);
+  }
+
+  if (productSearch) productSearch.addEventListener('input', filterListings);
+  if (productCategory) productCategory.addEventListener('change', filterListings);
+
+
+  /* ==========================================================
+     16. BUY BUTTON — PAYPAL LINK WIRING (product detail pages)
+     ----------------------------------------------------------
+     TODO before launch: replace PAYPAL_USERNAME with the real
+     PayPal.me username so "Buy now" sends buyers to a real,
+     working payment page. Until then this is a placeholder.
+     ========================================================== */
+  const PAYPAL_USERNAME = 'YOUR-PAYPAL-USERNAME';
+
+  $$('.js-buy-btn').forEach(btn => {
+    const price = btn.dataset.price;
+    if (!price) return;
+    btn.href = `https://paypal.me/${PAYPAL_USERNAME}/${price}`;
+  });
 
 
   /* ==========================================================
