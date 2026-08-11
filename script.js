@@ -454,6 +454,105 @@
 
 
   /* ==========================================================
+     17. ORDER DETAILS MODAL — collects delivery info before PayPal
+     ----------------------------------------------------------
+     Buyer fills target URL / anchor text / email / notes. On
+     submit we open a pre-filled mailto: to order@inzra.com (no
+     backend involved) and open the PayPal link in a new tab.
+     ========================================================== */
+  const orderModal = $('#orderModal');
+  const orderForm = $('#orderForm');
+  const orderNote = $('#orderModalNote');
+  const buyBtn = $('.js-buy-btn');
+
+  if (orderModal && orderForm && buyBtn) {
+    let pendingPaypalUrl = '';
+
+    const openOrderModal = () => {
+      pendingPaypalUrl = buyBtn.href;
+      orderModal.classList.add('is-open');
+      orderModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('is-locked');
+      const firstField = $('input[name="url"]', orderForm);
+      if (firstField) firstField.focus();
+    };
+
+    const closeOrderModal = () => {
+      orderModal.classList.remove('is-open');
+      orderModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('is-locked');
+    };
+
+    buyBtn.addEventListener('click', e => {
+      e.preventDefault();
+      openOrderModal();
+    });
+
+    $$('[data-order-close]', orderModal).forEach(el => el.addEventListener('click', closeOrderModal));
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && orderModal.classList.contains('is-open')) closeOrderModal();
+    });
+
+    const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
+    const validUrl = value => /^https?:\/\/.+\..+/.test(value.trim());
+
+    orderForm.addEventListener('submit', e => {
+      e.preventDefault();
+      orderNote.classList.remove('is-error', 'is-ok');
+
+      const urlField = $('input[name="url"]', orderForm);
+      const emailField = $('input[name="email"]', orderForm);
+      const anchorField = $('input[name="anchor"]', orderForm);
+      const notesField = $('textarea[name="notes"]', orderForm);
+
+      urlField.closest('.order-modal__field').classList.remove('has-error');
+      emailField.closest('.order-modal__field').classList.remove('has-error');
+
+      let hasError = false;
+      if (!validUrl(urlField.value)) {
+        urlField.closest('.order-modal__field').classList.add('has-error');
+        hasError = true;
+      }
+      if (!validEmail(emailField.value)) {
+        emailField.closest('.order-modal__field').classList.add('has-error');
+        hasError = true;
+      }
+      if (hasError) {
+        orderNote.classList.add('is-error');
+        orderNote.textContent = 'Please add a valid target URL (including https://) and email address.';
+        return;
+      }
+
+      const product = buyBtn.dataset.product || document.title;
+      const price = buyBtn.dataset.price || '';
+      const sku = buyBtn.dataset.sku || '';
+
+      const bodyLines = [
+        `Product: ${product}`,
+        `Price: $${price}`,
+        `SKU: ${sku}`,
+        '',
+        `Target URL: ${urlField.value.trim()}`,
+        `Anchor text: ${anchorField.value.trim() || '(none specified)'}`,
+        `Buyer email: ${emailField.value.trim()}`,
+        '',
+        'Notes:',
+        notesField.value.trim() || '(none)'
+      ];
+      const mailto = `mailto:order@inzra.com?subject=${encodeURIComponent('New order - ' + sku)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+
+      if (pendingPaypalUrl) window.open(pendingPaypalUrl, '_blank', 'noopener');
+      window.location.href = mailto;
+
+      orderNote.classList.add('is-ok');
+      orderNote.textContent = 'Opening your email app to send these details, and PayPal in a new tab.';
+      window.setTimeout(closeOrderModal, 1800);
+    });
+  }
+
+
+  /* ==========================================================
      SINGLE SCROLL LISTENER
      ========================================================== */
   const onScroll = onFrame(() => {
