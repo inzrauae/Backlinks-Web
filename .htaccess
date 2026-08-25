@@ -75,6 +75,23 @@ ServerTokens Prod
 </IfModule>
 
 # ============================================================
+# REDIRECT REMOVED PRODUCT/BLOG PAGES TO THEIR LISTING PAGE
+# ------------------------------------------------------------
+# The catalog was trimmed from 104 to 40 products. Old product
+# URLs still get hit from Google's index, bookmarks and old
+# external links (eBay, etc) — send them to the live listing
+# instead of a dead 404. Only fires when no matching file
+# exists, so real products/blog posts are unaffected.
+# ============================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME}\.html !-f
+    RewriteRule ^products/.+$ /marketplace [R=301,L]
+    RewriteRule ^blog/.+$ /blog [R=301,L]
+</IfModule>
+
+# ============================================================
 # TRAILING SLASH REDIRECT
 # ============================================================
 <IfModule mod_rewrite.c>
