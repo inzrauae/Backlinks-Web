@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/seoweb/public_html/
-    - /usr/bin/rsync -av --exclude=.git --exclude=.cpanel.yml --exclude=.gitignore --exclude=.vscode --exclude=.claude --exclude='New folder' --exclude='images/products/New folder (3)' --exclude=SEO_GEO_OPTIMIZATION.md --exclude='eBay-all-active-listings-report-*.csv' $PWD/ $DEPLOYPATH
+    - /usr/bin/rsync -av --delete --exclude=.git --exclude=.cpanel.yml --exclude=.gitignore --exclude=.vscode --exclude=.claude --exclude='New folder' --exclude='images/products/New folder (3)' --exclude=SEO_GEO_OPTIMIZATION.md --exclude='eBay-all-active-listings-report-*.csv' $PWD/ $DEPLOYPATH

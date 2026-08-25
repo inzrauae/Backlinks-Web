@@ -55,6 +55,25 @@ ServerTokens Prod
 # </IfModule>
 
 # ============================================================
+# /blog AND /blog/ COLLIDE WITH THE blog/ DIRECTORY
+# ------------------------------------------------------------
+# blog.html (the listing page) and the blog/ directory share the
+# same name. Apache resolves the physical directory before any
+# rewrite rule below gets a chance, and since directory listing
+# isn't actually blocked on this host, that exposed a raw file
+# index instead of the blog page. Intercept both forms here,
+# before anything else, and serve blog.html directly.
+# ============================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^blog/?$ blog.html [L]
+
+    # /products has no matching products.html — send it to the
+    # marketplace listing instead of exposing the products/ directory.
+    RewriteRule ^products/?$ /marketplace [R=301,L]
+</IfModule>
+
+# ============================================================
 # REMOVE .HTML EXTENSION FROM URLS
 # ============================================================
 <IfModule mod_rewrite.c>
