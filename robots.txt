@@ -1,0 +1,39 @@
+# INZRA SEO Robots Configuration
+# Last Updated: 2026-08-25
+
+# Allow all search engines
+User-agent: *
+Allow: /
+
+# Disallow private/admin pages
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.pdf$
+Disallow: /temp/
+Disallow: /cache/
+
+# Crawl delay (be respectful to servers)
+Crawl-delay: 0.5
+
+# Sitemaps
+Sitemap: https://inzra.com/sitemap.xml
+
+# Allow Google to crawl
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Allow Bing to crawl
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

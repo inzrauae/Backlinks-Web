@@ -1,0 +1,112 @@
+# INZRA SEO & Performance Optimization
+# Apache Configuration (.htaccess)
+
+# ============================================================
+# ENABLE GZIP COMPRESSION
+# ============================================================
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/x-font-opentype application/x-font-truetype font/opentype font/ttf
+</IfModule>
+
+# ============================================================
+# BROWSER CACHING
+# ============================================================
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+    ExpiresByType text/html "access plus 1 week"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/opentype "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+</IfModule>
+
+# ============================================================
+# ETAG HEADERS
+# ============================================================
+<IfModule mod_headers.c>
+    Header unset ETag
+    FileETag None
+    Header set Cache-Control "public, max-age=2592000"
+</IfModule>
+
+# ============================================================
+# REMOVE SERVER SIGNATURE
+# ============================================================
+ServerSignature Off
+ServerTokens Prod
+
+# ============================================================
+# HTTPS REDIRECT (if SSL is available)
+# ============================================================
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTPS} off
+#     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# ============================================================
+# REMOVE .HTML EXTENSION FROM URLS
+# ============================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # /index.html -> / (avoid a duplicate homepage URL)
+    RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+    RewriteRule ^index\.html$ / [R=301,L]
+
+    # /page.html -> /page (visible URL in the browser/search results)
+    RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+    RewriteRule ^ /%1 [R=301,L]
+
+    # Internally serve the matching .html file for the extensionless URL
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}\.html -f
+    RewriteRule ^(.*)$ $1.html [L]
+</IfModule>
+
+# ============================================================
+# TRAILING SLASH REDIRECT
+# ============================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME}\.html !-f
+    RewriteCond %{REQUEST_URI} !(.*)/$
+    RewriteRule ^(.*)$ $1/ [L,R=301]
+</IfModule>
+
+# ============================================================
+# DISABLE DIRECTORY LISTING
+# ============================================================
+Options -Indexes
+
+# ============================================================
+# PREVENT HOTLINKING
+# ============================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP_REFERER} !^$
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?inzra\.com [NC]
+    RewriteRule \.(jpg|jpeg|png|gif|svg|webp)$ - [F,NC]
+</IfModule>
+
+# ============================================================
+# SECURITY HEADERS
+# ============================================================
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>

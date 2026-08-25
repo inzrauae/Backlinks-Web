@@ -1,20 +1,21 @@
 /* ============================================================
-   ANCHORBASE — interaction layer (vanilla ES6)
+   INZRA — interaction layer (vanilla ES6)
    ------------------------------------------------------------
    01. Utilities
    02. Loading screen
-   03. Theme toggle (light / dark)
-   04. Sticky nav, mobile menu, active link
-   05. Scroll progress + scroll-to-top
-   06. Typing effect
-   07. Animated counters + SERP bar
-   08. Reveal on scroll (Intersection Observer)
-   09. Parallax on floating shapes
-   10. FAQ accordion
-   11. Button ripple
-   12. Wishlist toggle
-   13. Pricing period toggle
-   14. Newsletter form
+   03. Sticky nav, mobile menu, active link
+   04. Scroll progress + scroll-to-top
+   05. Typing effect
+   06. Animated counters + SERP bar
+   07. Reveal on scroll (Intersection Observer)
+   08. Parallax on floating shapes
+   09. FAQ accordion
+   10. Button ripple
+   11. Wishlist toggle
+   12. Pricing period toggle
+   13. Newsletter form
+   14. Store search + category filter
+   15. Buy button — WhatsApp link wiring
    ============================================================ */
 
 (function () {
@@ -38,13 +39,6 @@
     };
   }
 
-  // Storage that never throws in sandboxed contexts
-  const store = {
-    get(key) { try { return window.localStorage.getItem(key); } catch (e) { return null; } },
-    set(key, val) { try { window.localStorage.setItem(key, val); } catch (e) { /* session only */ } }
-  };
-
-
   /* ==========================================================
      02. LOADING SCREEN
      ========================================================== */
@@ -64,34 +58,7 @@
 
 
   /* ==========================================================
-     03. THEME TOGGLE
-     ========================================================== */
-  const root = document.documentElement;
-  const themeBtn = $('#themeToggle');
-
-  function applyTheme(theme) {
-    root.setAttribute('data-theme', theme);
-    if (!themeBtn) return;
-    const dark = theme === 'dark';
-    themeBtn.innerHTML = `<i class="fa-solid fa-${dark ? 'sun' : 'moon'}" aria-hidden="true"></i>`;
-    themeBtn.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} mode`);
-  }
-
-  const savedTheme = store.get('anchorbase-theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
-
-  if (themeBtn) {
-    themeBtn.addEventListener('click', () => {
-      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      store.set('anchorbase-theme', next);
-    });
-  }
-
-
-  /* ==========================================================
-     04. STICKY NAV, MOBILE MENU, ACTIVE LINK
+     03. STICKY NAV, MOBILE MENU, ACTIVE LINK
      ========================================================== */
   const nav = $('#nav');
   const burger = $('#burger');
@@ -147,7 +114,7 @@
 
 
   /* ==========================================================
-     05. SCROLL PROGRESS + SCROLL TO TOP
+     04. SCROLL PROGRESS + SCROLL TO TOP
      ========================================================== */
   const progressFill = $('#progressFill');
   const toTop = $('#toTop');
@@ -167,7 +134,7 @@
 
 
   /* ==========================================================
-     06. TYPING EFFECT
+     05. TYPING EFFECT
      ========================================================== */
   const typed = $('#typed');
   const phrases = ['actually rank.', 'editors stand behind.', 'pass real equity.', 'survive core updates.'];
@@ -198,7 +165,7 @@
 
 
   /* ==========================================================
-     07. ANIMATED COUNTERS + SERP BAR
+     06. ANIMATED COUNTERS + SERP BAR
      ========================================================== */
   function formatNumber(n) {
     return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -240,7 +207,7 @@
 
 
   /* ==========================================================
-     08. REVEAL ON SCROLL
+     07. REVEAL ON SCROLL
      ========================================================== */
   const revealObserver = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
@@ -254,7 +221,7 @@
 
 
   /* ==========================================================
-     09. PARALLAX
+     08. PARALLAX
      ========================================================== */
   const parallaxItems = $$('[data-parallax]');
 
@@ -269,7 +236,7 @@
 
 
   /* ==========================================================
-     10. FAQ ACCORDION
+     09. FAQ ACCORDION
      ========================================================== */
   $$('.faq__item').forEach(item => {
     const btn = $('.faq__q', item);
@@ -302,7 +269,7 @@
 
 
   /* ==========================================================
-     11. BUTTON RIPPLE
+     10. BUTTON RIPPLE
      ========================================================== */
   $$('.ripple').forEach(btn => {
     btn.addEventListener('click', e => {
@@ -320,7 +287,7 @@
 
 
   /* ==========================================================
-     12. WISHLIST
+     11. WISHLIST
      ========================================================== */
   $$('.pkg__wish').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -333,7 +300,7 @@
 
 
   /* ==========================================================
-     13. PRICING PERIOD TOGGLE
+     12. PRICING PERIOD TOGGLE
      ========================================================== */
   const monthlyBtn = $('#billMonthly');
   const annualBtn = $('#billAnnual');
@@ -371,7 +338,7 @@
 
 
   /* ==========================================================
-     14. NEWSLETTER FORM
+     13. NEWSLETTER FORM
      ========================================================== */
   const newsForm = $('#newsForm');
   const newsNote = $('#newsNote');
@@ -407,7 +374,7 @@
 
 
   /* ==========================================================
-     15. STORE SEARCH + CATEGORY FILTER (products page)
+     14. STORE SEARCH + CATEGORY FILTER (products page)
      ========================================================== */
   const productSearch = $('#productSearch');
   const productCategory = $('#productCategory');
@@ -438,118 +405,28 @@
 
 
   /* ==========================================================
-     16. BUY BUTTON — PAYPAL LINK WIRING (product detail pages)
+     15. BUY BUTTON — WHATSAPP LINK WIRING (product detail pages)
      ----------------------------------------------------------
-     TODO before launch: replace PAYPAL_USERNAME with the real
-     PayPal.me username so "Buy now" sends buyers to a real,
-     working payment page. Until then this is a placeholder.
+     "Order on WhatsApp" opens a chat with INZRA, pre-filled with
+     the product name, price and SKU so the buyer just adds their
+     target URL and anchor text preference before sending.
      ========================================================== */
-  const PAYPAL_USERNAME = 'YOUR-PAYPAL-USERNAME';
+  const WHATSAPP_NUMBER = '94778064714';
 
   $$('.js-buy-btn').forEach(btn => {
+    const product = btn.dataset.product;
+    if (!product) return;
     const price = btn.dataset.price;
-    if (!price) return;
-    btn.href = `https://paypal.me/${PAYPAL_USERNAME}/${price}`;
+    const sku = btn.dataset.sku;
+
+    const lines = [
+      `Hi INZRA! I'd like to order: ${product}${price ? ` ($${price})` : ''}${sku ? ` — SKU ${sku}` : ''}.`,
+      '',
+      'Target URL: ',
+      'Anchor text preference: '
+    ];
+    btn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
   });
-
-
-  /* ==========================================================
-     17. ORDER DETAILS MODAL — collects delivery info before PayPal
-     ----------------------------------------------------------
-     Buyer fills target URL / anchor text / email / notes. On
-     submit we open a pre-filled mailto: to order@inzra.com (no
-     backend involved) and open the PayPal link in a new tab.
-     ========================================================== */
-  const orderModal = $('#orderModal');
-  const orderForm = $('#orderForm');
-  const orderNote = $('#orderModalNote');
-  const buyBtn = $('.js-buy-btn');
-
-  if (orderModal && orderForm && buyBtn) {
-    let pendingPaypalUrl = '';
-
-    const openOrderModal = () => {
-      pendingPaypalUrl = buyBtn.href;
-      orderModal.classList.add('is-open');
-      orderModal.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('is-locked');
-      const firstField = $('input[name="url"]', orderForm);
-      if (firstField) firstField.focus();
-    };
-
-    const closeOrderModal = () => {
-      orderModal.classList.remove('is-open');
-      orderModal.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('is-locked');
-    };
-
-    buyBtn.addEventListener('click', e => {
-      e.preventDefault();
-      openOrderModal();
-    });
-
-    $$('[data-order-close]', orderModal).forEach(el => el.addEventListener('click', closeOrderModal));
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && orderModal.classList.contains('is-open')) closeOrderModal();
-    });
-
-    const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
-    const validUrl = value => /^https?:\/\/.+\..+/.test(value.trim());
-
-    orderForm.addEventListener('submit', e => {
-      e.preventDefault();
-      orderNote.classList.remove('is-error', 'is-ok');
-
-      const urlField = $('input[name="url"]', orderForm);
-      const emailField = $('input[name="email"]', orderForm);
-      const anchorField = $('input[name="anchor"]', orderForm);
-      const notesField = $('textarea[name="notes"]', orderForm);
-
-      urlField.closest('.order-modal__field').classList.remove('has-error');
-      emailField.closest('.order-modal__field').classList.remove('has-error');
-
-      let hasError = false;
-      if (!validUrl(urlField.value)) {
-        urlField.closest('.order-modal__field').classList.add('has-error');
-        hasError = true;
-      }
-      if (!validEmail(emailField.value)) {
-        emailField.closest('.order-modal__field').classList.add('has-error');
-        hasError = true;
-      }
-      if (hasError) {
-        orderNote.classList.add('is-error');
-        orderNote.textContent = 'Please add a valid target URL (including https://) and email address.';
-        return;
-      }
-
-      const product = buyBtn.dataset.product || document.title;
-      const price = buyBtn.dataset.price || '';
-      const sku = buyBtn.dataset.sku || '';
-
-      const bodyLines = [
-        `Product: ${product}`,
-        `Price: $${price}`,
-        `SKU: ${sku}`,
-        '',
-        `Target URL: ${urlField.value.trim()}`,
-        `Anchor text: ${anchorField.value.trim() || '(none specified)'}`,
-        `Buyer email: ${emailField.value.trim()}`,
-        '',
-        'Notes:',
-        notesField.value.trim() || '(none)'
-      ];
-      const mailto = `mailto:order@inzra.com?subject=${encodeURIComponent('New order - ' + sku)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
-
-      if (pendingPaypalUrl) window.open(pendingPaypalUrl, '_blank', 'noopener');
-      window.location.href = mailto;
-
-      orderNote.classList.add('is-ok');
-      orderNote.textContent = 'Opening your email app to send these details, and PayPal in a new tab.';
-      window.setTimeout(closeOrderModal, 1800);
-    });
-  }
 
 
   /* ==========================================================
