@@ -491,20 +491,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 /* Brand */
 .brand { display: inline-flex; align-items: center; gap: 11px; }
-.brand__mark {
-  width: 38px; height: 38px;
-  display: grid; place-items: center;
-  border-radius: 12px;
-  background: var(--grad-brand);
-  box-shadow: var(--sh-glow);
-  transition: transform var(--t);
-}
-.brand:hover .brand__mark { transform: rotate(-10deg) scale(1.06); }
-.brand__mark svg {
-  width: 22px; height: 22px;
-  fill: none; stroke: #fff;
-  stroke-width: 2.1; stroke-linecap: round;
-}
+.brand__text { display: flex; flex-direction: column; line-height: 1.15; }
 .brand__name {
   font-family: var(--font-display);
   font-weight: 700; font-size: 1.16rem;
@@ -514,6 +501,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   background: var(--grad-text);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.brand__tagline {
+  font-size: .62rem;
+  font-weight: 500;
+  letter-spacing: .01em;
+  color: var(--text-2);
 }
 
 /* Links */
@@ -1867,6 +1860,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   margin: 18px 0 20px;
 }
 .footer .brand__name { color: #fff; }
+.footer .brand__tagline { color: #94A3B8; }
 
 .socials { display: flex; gap: 10px; }
 .socials a {
